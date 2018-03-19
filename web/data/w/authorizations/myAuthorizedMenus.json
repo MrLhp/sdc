@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "title": "账户管理",
+      "href": "#/platformUser/list.html",
+      "className": "fa fa-table",
+      "subMenus": []
+    },
+    {
+      "title": "test",
+      "href": "#/test/list.html",
+      "className": "fa fa-table",
+      "subMenus": []
+    }
+  ]
+}

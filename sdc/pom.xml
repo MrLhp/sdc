@@ -1,0 +1,234 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.leadingsoft.bizfuse</groupId>
+		<artifactId>bizfuse-parent</artifactId>
+		<version>3.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>sdc</artifactId>
+	<version>1.0.0.RELEASE</version>
+	<packaging>jar</packaging>
+	<name>sdc</name>
+	<description>sea is a dream of the clouds</description>
+
+	<properties>
+		<!-- These remain empty unless the corresponding profile is active -->
+		<profile.swagger></profile.swagger>
+		<start-class>sdc.SdcWebApplication</start-class>
+		<start-class>sdc.SdcWebApplication</start-class>
+		<hazelcast-hibernate5.version>1.0</hazelcast-hibernate5.version>
+		<super-csv.version>2.4.0</super-csv.version>
+	</properties>
+
+	<dependencies>
+		<!-- bizfuse-web-common dependencies -->
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-web-common</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.hazelcast</groupId>
+					<artifactId>hazelcast-hibernate4</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- bizfuse-model-common dependencies -->
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-model-common</artifactId>
+		</dependency>
+
+		<!-- bizfuse-webauth-common dependencies -->
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-webauth-common</artifactId>
+		</dependency>
+
+		<!-- bizfuse-base-authority dependencies -->
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-base-authority</artifactId>
+		</dependency>
+
+		<!-- bizfuse-base-dict dependencies -->
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-base-dict</artifactId>
+		</dependency>
+
+		<!-- bizfuse-quartz dependencies -->
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-quartz</artifactId>
+		</dependency>
+
+		<!-- Hazelcast cache dependencies -->
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-hibernate5</artifactId>
+			<version>${hazelcast-hibernate5.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-spring</artifactId>
+		</dependency>
+
+		<!-- For CSV file import -->
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>${super-csv.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.leadingsoft.bizfuse</groupId>
+			<artifactId>bizfuse-base-filestorage</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.10.2</version>
+		</dependency>
+		<!--推送服务插件-->
+		<dependency>
+			<groupId>com.notnoop.apns</groupId>
+			<artifactId>apns</artifactId>
+			<version>1.0.0.Beta6</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>/excel/**</exclude>
+					<exclude>/static/**</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>/excel/**</include>
+					<include>/static/**/**</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>swagger</id>
+			<properties>
+				<profile.swagger>,swagger</profile.swagger>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- log configuration -->
+				<logback.loglevel>info</logback.loglevel>
+				<!-- default Spring profiles -->
+				<spring.profiles.active>dev${profile.swagger}</spring.profiles.active>
+			</properties>
+			<dependencies>
+				<!--<dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId> 
+					</dependency> -->
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>com.leadingsoft.bizfuse</groupId>
+					<artifactId>bizfuse-source-generator</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<!-- log configuration -->
+				<logback.loglevel>INFO</logback.loglevel>
+				<!-- default Spring profiles -->
+				<spring.profiles.active>prod${profile.swagger}</spring.profiles.active>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
+				</dependency>
+				<dependency>
+					<groupId>com.leadingsoft.bizfuse</groupId>
+					<artifactId>bizfuse-source-generator</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
+</project>
