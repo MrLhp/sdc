@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.leadingsoft.bizfuse</groupId>
 		<artifactId>bizfuse-parent</artifactId>
-		<version>3.0-SNAPSHOT</version>
+		<version>3.0.0.0.RELEASE</version>
 	</parent>
 	<artifactId>sdc</artifactId>
 	<version>1.0.0.RELEASE</version>
@@ -131,7 +131,19 @@
 			<version>1.0.0.Beta6</version>
 		</dependency>
 	</dependencies>
-
+	<repositories>
+		<repository>
+			<id>release</id>
+			<url>http://maven.leadingsoft.com.cn/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>snapshots</id>
+			<url>http://maven.leadingsoft.com.cn/content/repositories/snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<build>
 		<resources>
 			<resource>
