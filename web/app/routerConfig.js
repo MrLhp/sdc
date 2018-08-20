@@ -673,33 +673,33 @@ angular.module("MetronicApp").config(['$stateProvider', '$urlRouterProvider', fu
             }
         })
 
-         .state('fullCalendarDemo', {
-             url: "/system/fullCalendarDemo/list.html",
-             templateUrl: "views/system/fullCalendarDemo/list.html",
-             data: {
-                 pageTitle: "fullCalendarDemo",
-                 pageBar: [
-                     {href: "", class: "fa fa-home", title: "主页"},
-                     {href: "", class: "", title: "日期日程"},
-                 ]
-             },
-             controller: "FullCalendarDemoController",
-             resolve: {
-                 deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                     return $ocLazyLoad.load({
-                         name: 'MetronicApp',
-                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
-                         files: [
-                             'app/controllers/system/fullCalendarDemo/FullCalendarDemoController.js',
-                             'app/services/system/fullCalendarDemo/FullCalendarDemoService.js',
-                             'bower_components/fullcalendarCustom/dist/fullcalendar.css',
-                             'bower_components/fullcalendarCustom/dist/fullcalendar.print.css',
-                             'bower_components/fullcalendarCustom/dist/fullcalendar.js'
-                         ]
-                     });
-                 }]
-             }
-         })
+        .state('fullCalendarDemo', {
+            url: "/system/fullCalendarDemo/list.html",
+            templateUrl: "views/system/fullCalendarDemo/list.html",
+            data: {
+                pageTitle: "fullCalendarDemo",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "日期日程"},
+                ]
+            },
+            controller: "FullCalendarDemoController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/controllers/system/fullCalendarDemo/FullCalendarDemoController.js',
+                            'app/services/system/fullCalendarDemo/FullCalendarDemoService.js',
+                            'bower_components/fullcalendarCustom/dist/fullcalendar.css',
+                            'bower_components/fullcalendarCustom/dist/fullcalendar.print.css',
+                            'bower_components/fullcalendarCustom/dist/fullcalendar.js'
+                        ]
+                    });
+                }]
+            }
+        })
 
         .state('angularFullCalendar', {
             url: "/system/angularFullCalendarDemo/list.html",
@@ -836,32 +836,32 @@ angular.module("MetronicApp").config(['$stateProvider', '$urlRouterProvider', fu
             }
         })
         .state('testView', {
-        url: "/root/test/view.html",
-        templateUrl: "views/root/test/view.html",
-        data: {
-            pageTitle: "test",
-            pageBar: [
-                {href: "", class: "fa fa-home", title: "主页"},
-                {href: "", class: "", title: "test"}
-            ]
-        },
-        controller: "testEditController",
-        resolve: {
-            deps: ['$ocLazyLoad', function ($ocLazyLoad) {
-                return $ocLazyLoad.load({
-                    name: 'MetronicApp',
-                    insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
-                    files: [
-                        'app/controllers/BaseController.js',
-                        'app/controllers/test/testController.js',
-                        'app/services/test/testParentService.js',
-                        'app/services/test/testService.js',
-                        'app/directives/ngTable/directive.js'
-                    ]
-                });
-            }]
-        }
-    })
+            url: "/root/test/view.html",
+            templateUrl: "views/root/test/view.html",
+            data: {
+                pageTitle: "test",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "test"}
+                ]
+            },
+            controller: "testEditController",
+            resolve: {
+                deps: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/controllers/BaseController.js',
+                            'app/controllers/test/testController.js',
+                            'app/services/test/testParentService.js',
+                            'app/services/test/testService.js',
+                            'app/directives/ngTable/directive.js'
+                        ]
+                    });
+                }]
+            }
+        })
         .state('roleListDemo', {
             url: "/root/roles/list.html",
             templateUrl: "views/root/roles/list.html",
@@ -967,6 +967,30 @@ angular.module("MetronicApp").config(['$stateProvider', '$urlRouterProvider', fu
                             'app/directives/ngTable/directive.js'
                         ]
                     });
+                }]
+            }
+        })
+        .state('student', {
+            url: "/student/list.html",
+            templateUrl: "views/student/list.html",
+            data: {
+                pageTitle: "学生管理",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "学生管理"}
+                ]
+            },
+            controller:"StudentController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/controllers/student/StudentController.js',
+                            'app/services/student/StudentService.js'
+                        ]
+                    })
                 }]
             }
         })
