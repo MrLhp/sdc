@@ -52,6 +52,7 @@ angular.module("MetronicApp").service("UrlConfigService", function () {
             },
             role: {
             	searchListUrl: Host + RootPath + "/w/roles/s",
+                allRolesUrl:Host + RootPath + "/w/roles/list",
                 url: Host + RootPath + "/w/roles/:id",
                 roleMenus: Host + RootPath + "/w/authorizations/roleMenus/:roleId"
             },

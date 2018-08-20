@@ -19,7 +19,7 @@
         this._enableUserUrl = UrlConfigService.urlConfig.system.platformUser.enable;
         this._disableUserUrl = UrlConfigService.urlConfig.system.platformUser.disable;
         this._changePasswordUrl = UrlConfigService.urlConfig.system.platformUser.changePasswordUrl;
-        this._getPlatformUserRolesUrl = UrlConfigService.urlConfig.system.role.url;
+        this._getPlatformUserRolesUrl = UrlConfigService.urlConfig.system.role.allRolesUrl;
 
         this._sort = 'name';
         this._order = 'asc';
