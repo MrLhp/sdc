@@ -43,9 +43,16 @@ angular.module("MetronicApp").filter("timestampToDate", ["$filter", function ($f
             value = value + "%";
         return value;
     }
-}).filter("numberToYuan", function () {
+}).filter("numberToYuan", function ($filter) {
     return function (value) {
         var filter = $filter("number");
         return filter(value, "2") + "元";
     }
+}).filter("number2Divide",function () {
+    return function (value) {
+        if (angular.isNumber(value)) {
+            value=value/100;
+        }
+        return value.toString();
+    };
 });

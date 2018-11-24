@@ -33,8 +33,8 @@ public class SourceGenerator {
      */
     public static void main(final String[] args) throws ClassNotFoundException {
 
-        final String modelBasePackage = "sample.web.common.model";
-        final String[] models = new String[] {"School", "Teacher", "Student", "StudentProfile" };
+        final String modelBasePackage = "sdc.model.equalamount";
+        final String[] models = new String[] {"EqualAmountResult"};
 
         final Output output = Output.file; // console 或 file
         boolean override = false; // 除非万不得已，默认不要覆盖本地文件

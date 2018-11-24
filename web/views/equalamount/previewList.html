@@ -1,0 +1,112 @@
+<script type="text/ng-template" id="operation.html">
+    <div class="text-center">
+        <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row.id,'view')">查看</button>
+        <button class="btn btn-edit btn-xs" data-ng-click="onActionClick(row.id,'edit')">编辑</button>
+        <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row.id,'del')">删除</button>
+    </div>
+</script>
+<div class="list-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <a class="btn btn-add miao" ng-click="create()">新增</a>
+            </div>
+            <div class="pull-right">
+                <form class="form-horizontal" role="form">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">贷款额度</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="请输入贷款额度" enter-search="search"
+                                           ng-model="condition.quota"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">贷款利率</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="请输入贷款利率" enter-search="search"
+                                           ng-model="condition.interestRate"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">利息折扣</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="请输入利息折扣" enter-search="search"
+                                           ng-model="condition.interestRebate"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">贷款类型</label>
+                                <div class="col-md-8">
+                                    <select class="form-control ng-touched" data-placeholder="贷款类型"
+                                            required
+                                            ng-model="condition.equalAmountType" select2>
+                                        <option ng-repeat="equalAmountType in equalAmountTypes" value="{{equalAmountType.key}}"
+                                                ng-bind="equalAmountType.text"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="createdDate" class="control-label col-md-4">贷款开始日期</label>
+                                <div class="col-md-8">
+                                    <div date-time-append class="input-group">
+                                        <input id="createdDate"
+                                               class="form-control"
+                                               placeholder="贷款开始日期"
+                                               ng-model="condition.dateOfLoan"
+                                               format="YYYY-MM-DD"
+                                               date-time max-view="year" min-view="date" view="month"
+                                               required
+                                               auto-close="true"/>
+                                        <span class="input-group-btn">
+                                                    <button class="btn default" type="button">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">贷款期数</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="请输入贷款期数" enter-search="search"
+                                           ng-model="condition.stageNumberOfMonth"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <a href="javascript:;" class="btn btn-query red" ng-click="search()">查询</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <span class="pull-right table-summary">共还款<label data-ng-bind="sumPayMoney/100"></label>，含利息<label data-ng-bind="sumInterest/100"></label></span>
+            <ng-table
+                    columns="columns"
+                    sort="sort"
+                    order="order"
+                    rows="rows"
+                    notpageable="true"
+                    selectable="selectable">
+            </ng-table>
+        </div>
+    </div>
+</div>

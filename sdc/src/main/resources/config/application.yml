@@ -14,16 +14,16 @@ spring:
 #        url: jdbc:h2:mem:demo_db;MVCC=TRUE;LOCK_TIMEOUT=10000
 #        username: sa
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://happy.kafeitoo.com:12361/sdc?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&useSSL=false&amp;autoReconnect=true
-        username: mysql
-        password: mysql@2018
+        url: jdbc:mysql://172.16.1.100:3306/sdc?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&useSSL=false&amp;autoReconnect=true
+        username: root
+        password: areyouok
         test-while-idle: true
         max-wait-millis: 30000
         validation-query: 'SELECT 1'
         time-between-eviction-runs-millis: 20000
         min-evictable-idle-time-millis: 28700
     jpa:
-        database-platform: org.hibernate.dialect.MySQL57InnoDBDialect
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: mysql
         show-sql: true
         hibernate:

@@ -994,5 +994,30 @@ angular.module("MetronicApp").config(['$stateProvider', '$urlRouterProvider', fu
                 }]
             }
         })
+        .state('euqalamount',{
+            url: "/equalamount/preview.html",
+            templateUrl: "views/equalamount/previewList.html",
+            data: {
+                pageTitle: "资金预算",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "资金预算"}
+                ]
+            },
+            controller:"EqualAmountPreviewController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/directives/ngTable/directive.js',
+                            'app/controllers/equalamount/EqualAmountPreviewController.js',
+                            'app/services/equalamount/EqualAmountPreviewService.js'
+                        ]
+                    })
+                }]
+            }
+        })
 
 }]);

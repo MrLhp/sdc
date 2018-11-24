@@ -130,6 +130,10 @@
 			<artifactId>apns</artifactId>
 			<version>1.0.0.Beta6</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -238,6 +242,7 @@
 				<dependency>
 					<groupId>com.leadingsoft.bizfuse</groupId>
 					<artifactId>bizfuse-source-generator</artifactId>
+					<scope>compile</scope>
 				</dependency>
 			</dependencies>
 		</profile>

@@ -142,6 +142,10 @@
             }
 
         };
+
+        this.postForm = function (model) {
+            return this.$resource(this._searchListUrl,{'update':{method:'POST'}}).save(model)
+        };
     }
 
     global.BaseListService = BaseListService;
