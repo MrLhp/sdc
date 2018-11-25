@@ -81,7 +81,8 @@ angular.module("MetronicApp").service("UrlConfigService", function () {
             searchListUrl: Host + RootPath + "/w/students/s"
         },
         equalAmount:{
-            searchPreviewUrl: Host + RootPath + "/w/equalAmountResults/preview"
+            searchPreviewUrl: Host + RootPath + "/w/equalAmountResults/preview",
+            saveEqualAmountUrl: Host + RootPath + "/w/equalAmountStatistics"
         }
     };
 });

@@ -34,7 +34,7 @@ public class SourceGenerator {
     public static void main(final String[] args) throws ClassNotFoundException {
 
         final String modelBasePackage = "sdc.model.equalamount";
-        final String[] models = new String[] {"EqualAmountResult"};
+        final String[] models = new String[] {"EqualAmountStatistic"};
 
         final Output output = Output.file; // console 或 file
         boolean override = false; // 除非万不得已，默认不要覆盖本地文件

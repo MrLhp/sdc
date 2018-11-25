@@ -11,12 +11,16 @@
         ];
 
         this._searchListUrl = UrlConfigService.urlConfig.equalAmount.searchPreviewUrl;
+        this._saveEqualAmountUrl = UrlConfigService.urlConfig.equalAmount.saveEqualAmountUrl;
 
         this._sort = 'no';
         this._order = 'asc';
 
         BaseListService.call(this, this._searchListUrl, this._url, $resource, this._schema);
 
+        this.saveEqualAmount=function (condition) {
+            return this.$resource(this._saveEqualAmountUrl,null, {'save': {method: 'POST'}}).save(condition);
+        }
 
     }
 

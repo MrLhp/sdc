@@ -29,7 +29,37 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 stageNumberOfMonth: 12,
                 equalAmountType: "interest"
             };
+
             EqualAmountPreviewService.clearSearchParams();
+
+            $scope.showCreate=function(){
+                let modalInstance = $uibModal.open({
+                    templateUrl: 'showEqualAmountModal.html',
+                    controller: ['$scope','$uibModalInstance',function ($scope,$uibModalInstance) {
+                        $scope.equalAmountSources = EnumService.get("equalAmountSources");
+
+                        $scope.btn_ok = function () {
+                            $uibModalInstance.close($scope.condition);
+                        };
+
+                        $scope.btn_cancel = function () {
+                            $uibModalInstance.dismiss();
+                        };
+                    }]
+                });
+                
+                modalInstance.result.then(function (condition) {
+                    $scope.condition.equalAmountName=condition.equalAmountName;
+                    $scope.condition.equalAmountSource=condition.equalAmountSource;
+                    EqualAmountPreviewService.saveEqualAmount($scope.condition).$promise.then(function (result) {
+                        if (result.data == "success") {
+                            toastr.success("创建成功!");
+                        }
+                    });
+                })
+            }
+
+
 
             //search
             $scope.search = function () {
@@ -50,10 +80,4 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
             };
         }
     ]
-).filter("equalAmountFilter",["EnumService",function (EnumService) {
-    let equalAmountTypes = EnumService.get("equalAmountType");
-    return function (value) {
-        let even = _.find(equalAmountTypes, {"key": value});
-        return even?even.text:value;
-    }
-}])
+)

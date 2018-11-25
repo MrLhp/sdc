@@ -6,6 +6,8 @@ import sdc.model.authentication.User;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
@@ -26,6 +28,7 @@ public class EqualAmountResult extends AbstractAuditModel {
     /**
      * 还款日
      */
+    @Temporal(TemporalType.DATE)
     private Date repaymentDate;
     /**
      * 还款额（x100）
@@ -47,7 +50,4 @@ public class EqualAmountResult extends AbstractAuditModel {
      * 是否已还款
      */
     private boolean isPayment=false;
-
-    @ManyToOne
-    User user;
 }

@@ -45,7 +45,6 @@ public class EqualAmountResultConvertor extends AbstractConvertor<EqualAmountRes
         dto.setInterest(model.getInterest());
         dto.setAmountMoney(model.getAmountMoney());
         dto.setPayment(model.isPayment());
-        dto.setUser(model.getUser());
 
         return dto;
     }
@@ -61,7 +60,6 @@ public class EqualAmountResultConvertor extends AbstractConvertor<EqualAmountRes
         model.setInterest(dto.getInterest());
         model.setAmountMoney(dto.getAmountMoney());
         model.setPayment(dto.isPayment());
-        model.setUser(dto.getUser());
 
         return model;
     }
@@ -77,7 +75,6 @@ public class EqualAmountResultConvertor extends AbstractConvertor<EqualAmountRes
         model.setInterest(dto.getInterest());
         model.setAmountMoney(dto.getAmountMoney());
         model.setPayment(dto.isPayment());
-        model.setUser(dto.getUser());
 
         return model;
     }
