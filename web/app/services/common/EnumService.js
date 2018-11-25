@@ -10,7 +10,7 @@ angular.module("MetronicApp").service("EnumService", function () {
             {"key": "female", "text": "女"}
         ],
         /*贷款类型*/
-        "equalAmountType":[
+        "equalAmountTypes":[
             {"key":"interest","text":"等额本息"},
             {"key":"principal","text":"等额本金"}
         ],

@@ -6,6 +6,11 @@
     </div>
 </script>
 <div class="list-content">
+    <div class="pull-left">
+        <a href="#/equalAmount/list.html" class="btn blue">
+            <i class="fa fa-mail-reply"></i><span>返回</span>
+        </a>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="pull-right">
@@ -102,7 +107,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <span class="pull-right table-summary">共还款<label data-ng-bind="sumPayMoney/100"></label>，含利息<label data-ng-bind="sumInterest/100"></label></span>
+            <span class="pull-right table-summary">共还款<label data-ng-bind="(+sumPayMoney)/100"></label>，含利息<label data-ng-bind="(+sumInterest)/100"></label></span>
             <ng-table
                     columns="columns"
                     sort="sort"

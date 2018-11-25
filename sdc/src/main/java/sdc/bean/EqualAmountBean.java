@@ -3,6 +3,8 @@ package sdc.bean;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
@@ -22,6 +24,7 @@ public class EqualAmountBean {
     /**
      * 还款日
      */
+    @Temporal(TemporalType.DATE)
     Date repaymentDate;
     /**
      * 还款额（x100）

@@ -2,6 +2,7 @@ package sdc.dto.equalamount;
 
 import lombok.Getter;
 import lombok.Setter;
+import sdc.enums.EqualAmountSource;
 import sdc.enums.EqualAmountType;
 
 import java.util.Date;
@@ -32,6 +33,16 @@ public class EqualAmountPreviewDTO {
      * 分期数
      */
     private int stageNumberOfMonth;
-
+    /**
+     * 贷款类型
+     */
     private EqualAmountType equalAmountType;
+    /**
+     * 贷款来源
+     */
+    private EqualAmountSource equalAmountSource;
+    /**
+     * 贷款名称
+     */
+    private String equalAmountName;
 }
