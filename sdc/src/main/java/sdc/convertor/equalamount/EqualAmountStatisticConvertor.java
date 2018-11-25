@@ -41,7 +41,8 @@ public class EqualAmountStatisticConvertor extends AbstractConvertor<EqualAmount
     public EqualAmountStatisticDTO toDTO(@NonNull final EqualAmountStatistic model, final boolean forListView) {
         final EqualAmountStatisticDTO dto = new EqualAmountStatisticDTO();
         dto.setId(model.getId());
-        dto.setUser(model.getUser());
+        dto.setUsername(model.getUser().getDetails().getName());
+        dto.setUserNo(model.getUser().getNo());
         dto.setResult(model.getResult());
         dto.setEqualAmountName(model.getEqualAmountName());
         dto.setAmountTotalMoney(model.getAmountTotalMoney());
@@ -54,7 +55,6 @@ public class EqualAmountStatisticConvertor extends AbstractConvertor<EqualAmount
     // 构建新Model
     private EqualAmountStatistic constructModel(final EqualAmountStatisticDTO dto) {
         EqualAmountStatistic model = new EqualAmountStatistic();
-        model.setUser(dto.getUser());
         model.setResult(dto.getResult());
         model.setEqualAmountName(dto.getEqualAmountName());
         model.setAmountTotalMoney(dto.getAmountTotalMoney());
@@ -67,7 +67,6 @@ public class EqualAmountStatisticConvertor extends AbstractConvertor<EqualAmount
     // 更新Model
     private EqualAmountStatistic updateModel(final EqualAmountStatisticDTO dto) {
         EqualAmountStatistic model = equalAmountStatisticService.get(dto.getId());
-        model.setUser(dto.getUser());
         model.setResult(dto.getResult());
         model.setEqualAmountName(dto.getEqualAmountName());
         model.setAmountTotalMoney(dto.getAmountTotalMoney());
