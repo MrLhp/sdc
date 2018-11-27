@@ -2,88 +2,143 @@
  *  电影项目自定义列表
  */
 'use strict';
-angular.module("MetronicApp").directive('ngTable', function () {
+angular.module("MetronicApp").directive('ngTable', ['$timeout', function ($timeout) {
     return {
         templateUrl: 'app/directives/ngTable/template.html',
         restrict: 'EA',
         scope: {
+            a: '=',
+            rowsOne: '=',
             columns: '=',
-            sort: '=',
             order: '=',
             pageable: '=',
             rows: '=',
             notpageable: '=',
-            selectable: "="
+            embed: '=',
+            pageableConfig: '='
         },
         replace: true,
         link: function ($scope, $element, $attrs) {
-
         },
         controller: ['$scope', function ($scope) {
-
-            $scope.onHeadCheckboxClick = function ($event) {
-                var flag = false;
-                if ($event.target.checked) {
-                    flag = true
+            $(window).scroll(function () {
+                if ($(".theadFake").length == 0) {
+                    return;
                 }
-                angular.forEach($scope.rows, function (row) {
-                    row.selected = flag;
+                $(".theadFake").css({
+                    "width": $(".table-scrollable-id")[0].offsetWidth + "px",
+                    // "left":$(".page-sidebar-menu").width() + 41 + "px",
+                    "top": 40 + "px"
+                })
+                $(".table-id").css({
+                    "width": $(".tableMain").width() + "px"
                 });
-            };
 
-            $scope.rowSelect = function ($event, row) {
-                if ($scope.selectable) {
-                    if (row.selected) {
-                        row.selected = false;
-                    } else {
-                        row.selected = true;
-                    }
-                }
-            };
-
-            if ($scope.selectable) {
-                $scope.$watch('rows', function () {
-                    $scope.getCheckedItems();
-                }, true);
-            }
-
-            $scope.getCheckedItems = function () {
-                if ($scope.rows && $scope.rows.length !== 0) {
-                    var selectItems = [];
-                    angular.forEach($scope.rows, function (row) {
-                        if (row.selected) {
-                            selectItems.push(row);
+                if (navigator.userAgent.indexOf("Chrome") > -1) {
+                    if ($(".thead-float-tr").children().length != 0 && $(".thead-main-tr").children().length != 0) {
+                        for (var i = 0; i < $(".thead-float-tr").children().length; i++) {
+                            if (i == 0 || i == $(".thead-float-tr").children().length - 1) {
+                                $($(".thead-float-tr").children()[i]).css({
+                                    "padding-left": ( (  $($(".thead-main-tr").children()[i])[0].offsetWidth - $($(".thead-float-tr").children()[i]).width()) / 2 ) - 0.5,
+                                    "padding-right": ( (  $($(".thead-main-tr").children()[i])[0].offsetWidth - $($(".thead-float-tr").children()[i]).width()) / 2 ) - 0.5
+                                })
+                            } else {
+                                $($(".thead-float-tr").children()[i]).css({
+                                    "padding-left": ( (  $($(".thead-main-tr").children()[i])[0].offsetWidth - $($(".thead-float-tr").children()[i]).width()) / 2 ) - 1,
+                                    "padding-right": ( (  $($(".thead-main-tr").children()[i])[0].offsetWidth - $($(".thead-float-tr").children()[i]).width()) / 2 ) - 1
+                                })
+                            }
                         }
-                    });
-                    $scope.$parent.checkedList = selectItems;
-
-                    if (selectItems.length === $scope.rows.length) {
-                        $scope.headChecked = true;
-                    } else {
-                        $scope.headChecked = false;
+                    }
+                } else {
+                    if ($(".thead-float-tr").children().length != 0 && $(".thead-main-tr").children().length != 0) {
+                        for (var i = 0; i < $(".thead-float-tr").children().length; i++) {
+                            $($(".thead-float-tr").children()[i]).css({
+                                "padding-left": ( (  $($(".thead-main-tr").children()[i])[0].offsetWidth - $($(".thead-float-tr").children()[i]).width()) / 2 ) - 0.5,
+                                "padding-right": ( (  $($(".thead-main-tr").children()[i])[0].offsetWidth - $($(".thead-float-tr").children()[i]).width()) / 2 ) - 0.5
+                            })
+                        }
                     }
                 }
-            };
 
+                if ($(window).scrollTop() > ($(".thead").offset().top - 50)) {
+                    if (navigator.userAgent.indexOf("Firefox") > -1) {
+                        $(".thead-float").css({
+                            "display": "-moz-box"
+                        })
+                        $(".theadFake").css({
+                            "display": "block"
+                        })
+                    } else if (navigator.userAgent.indexOf("Chrome") > -1) {
+                        $(".thead-float").css({
+                            "display": "block"
+                        })
+                        $(".theadFake").css({
+                            "display": "block"
+                        })
+                    } else {
+                        $(".thead-float").css({
+                            "display": "-ms-flexbox"
+                        })
+                        $(".theadFake").css({
+                            "display": "-ms-grid"
+                        })
+                    }
+                } else {
+                    $(".thead-float").css({
+                        "display": "none"
+                    })
+                    $(".theadFake").css({
+                        "display": "none"
+                    })
+
+                }
+            });
+            $(".table-scrollable").scroll(function (e) {
+                $(".thead-float").css({
+                    "margin-left": 0 - e.currentTarget.scrollLeft + "px"
+                });
+            })
+            //获取返回的能看到的按钮列表
+            $scope.buttonKeys = $scope.$parent.buttonKeys;
+
+            if ($scope.$parent) {
+                $scope.parentObj = $scope.$parent;
+            }
+            if ($scope.embed) { // 保存子表格元素，防止刷新后丢失
+                $scope.tablec = $('.embed-table');
+            }
             //判断是否直接输入
             $scope.isOutput = function (column) {
                 return !(undefined !== column['type'] || undefined !== column['filter'])
             };
-
             //获取列显示类型
             $scope.typeOf = function (column) {
-                return column['type'];
+                return column['type']
             };
 
-            $scope.onActionClick = function (row, parentMethod, params) {
-                if (angular.isFunction($scope.$parent[parentMethod])) {
-                    $scope.$parent[parentMethod](row, params);
+            // checkbox is checked
+            $scope.onCheckboxChecked = function (row) {
+                if (row.chk) {
+                    $scope.$parent.checkedList.push(row);
+                } else {
+                    angular.forEach($scope.$parent.checkedList, function (v, index) {
+                        if (v.$$hashKey == row.$$hashKey) {
+                            $scope.$parent.checkedList.splice(index, 1);
+                        }
+                    })
                 }
             };
 
-            $scope.onEvaluationMethod = function (row, parentMethod) {
-                if (angular.isFunction($scope.$parent[parentMethod])) {
-                    return $scope.$parent[parentMethod](row);
+            $scope.onRadioChecked = function ($event, row) {
+                if ($event.target.checked) {
+                    $scope.$parent.row = row;
+                }
+            };
+
+            $scope.onActionClick = function (row, parentMethod) {
+                if ($scope.$parent.hasOwnProperty(parentMethod)) {
+                    $scope.$parent[parentMethod](row);
                 }
             };
 
@@ -103,23 +158,23 @@ angular.module("MetronicApp").directive('ngTable', function () {
                 return $scope.order === order;
             };
 
-            // header
-            $scope.onHeaderClicked = function (column) {
-                if (!column.sortable) {
+            $scope.onRowClicked = function (row, $event) {
+                if (!$scope.embed) return;
+                if ($($event.currentTarget).next('tr.embed-table').size() > 0 && !$('.embed-table').is(":hidden")) {
+                    $('.embed-table').hide();
                     return;
                 }
-                if ($scope.sort === column.name) {
-                    $scope.order = $scope.order === 'asc' ? 'desc' : 'asc';
-                } else {
-                    $scope.sort = column.name;
-                    $scope.order = 'asc';
+                if ($scope.$parent.hasOwnProperty('onRowClicked')) {
+                    $scope.$parent['onRowClicked'](row, $scope.callbackfn);
                 }
-            };
+                $scope.tablec.insertAfter($event.currentTarget);    //移动节点
+                $('.embed-table').show();
+            }
         }]
     };
-}).filter("ngTableFilter", ['$filter', '$sce', function ($filter, $sce) {
+}]).filter("ngTableFilter", ['$filter', '$sce', function ($filter, $sce) {
     return function (val, filter) {
-        return $sce.trustAsHtml($filter(filter)(val));
+        return $filter(filter)(val);
     }
 }]);
 

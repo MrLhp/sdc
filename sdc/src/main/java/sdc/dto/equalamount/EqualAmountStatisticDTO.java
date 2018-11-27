@@ -21,8 +21,6 @@ public class EqualAmountStatisticDTO extends AbstractDTO {
 
     private String userNo;
 
-    private List<EqualAmountResult> result;
-
     /**
      * 贷款名称
      */

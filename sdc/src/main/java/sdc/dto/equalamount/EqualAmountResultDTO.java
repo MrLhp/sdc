@@ -58,6 +58,4 @@ public class EqualAmountResultDTO extends AbstractDTO {
      */
     @ApiModelProperty("是否已还款")
     private boolean isPayment=false;
-
-    private User user;
 }

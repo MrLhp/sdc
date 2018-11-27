@@ -78,8 +78,8 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
             };
         }
     ]
-).controller('EqualAmountListController', ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountListService',
-        function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountListService) {
+).controller('EqualAmountListController', ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountListService','EqualAmountPreviewService',
+        function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountListService,EqualAmountPreviewService) {
             $scope.$on('$viewContentLoaded', function () {
                 App.initAjax();
                 $rootScope.settings.layout.pageBodySolid = true;
@@ -98,12 +98,6 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                     EqualAmountListService.list().$promise.then(function (result) {
                         $scope.rows = result.data;
 
-                        /**实现默认选中*/
-                        for (var i = 0; i < $scope.rows.length; i++) {
-                            if ($scope.rows[i].id == 1) {
-                                $scope.rows[i].selected = true
-                            }
-                        }
                         EqualAmountListService.setStoredPage(result.pageable.number);
                         $scope.pageable = result.pageable;
                         if (!$scope.$$phase) {
@@ -179,7 +173,44 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 $scope.toPreview = function () {
                     $location.path("/equalAmount/preview.html")
                 };
-                
+
+                $scope.embed = {
+                    columns: EqualAmountPreviewService.getSchema(),
+                    sort: EqualAmountPreviewService.getSort(),
+                    order: EqualAmountPreviewService.getOrder(),
+                    pageable: EqualAmountPreviewService.getPageable(),
+                    rows: []
+                };
+
+                $scope.list();
+                $scope.listEmbed = function (row) {
+                    EqualAmountPreviewService.list(function (res) {
+                        if ('success' == res.status) {
+                            $scope.embed.rows = res.data;
+                        } else {
+                            toastr.error("", "查询异常！");
+                        }
+                    })
+                };
+            });
+
+            $scope.onRowClicked = function (row) {
+                EqualAmountPreviewService.setStoredPage(0);
+                $scope.listEmbed(row);
+            };
+
+
+            $scope.$watch('embed.pageable.size', function (newVal, oldVal) {
+                if (newVal == oldVal) return;
+                EqualAmountPreviewService.setSize(newVal);
+                $scope.listEmbed($scope.model.id);
+            });
+
+
+            $scope.$watch('embed.pageable.number', function (newVal, oldVal) {
+                if (newVal == oldVal) return;
+                EqualAmountPreviewService.setStoredPage(newVal);
+                $scope.listEmbed($scope.model.id);
             });
         }
     ]
