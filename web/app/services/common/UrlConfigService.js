@@ -87,6 +87,9 @@ angular.module("MetronicApp").service("UrlConfigService", function () {
             },
             statistics:{
                 searchListUrl: Host + RootPath + "/w/equalAmountStatistics/s",
+            },
+            result:{
+                searchListByStatisticsIdUrl:Host + RootPath + "/w/equalAmountResults/detail/:id"
             }
         }
     };

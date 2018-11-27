@@ -19,4 +19,6 @@ public interface EqualAmountResultRepository extends Repository<EqualAmountResul
 
     void delete(Long id);
 
+    Page<EqualAmountResult> findAllByEqualAmountStatistic_Id(Pageable pageable,Long id);
+
 }

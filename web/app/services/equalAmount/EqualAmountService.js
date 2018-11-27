@@ -67,13 +67,12 @@
             {name:'isPayment',label:'已还款',sortable:true}
         ];
 
-        this._searchListUrl = UrlConfigService.urlConfig.equalAmount.preview.searchPreviewUrl;
+        this._searchListUrl = UrlConfigService.urlConfig.equalAmount.result.searchListByStatisticsIdUrl;
 
         this._sort = 'no';
         this._order = 'asc';
 
         BaseListService.call(this, this._searchListUrl, this._url, $resource, this._schema);
-
 
     }
 

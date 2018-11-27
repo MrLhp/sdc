@@ -4,10 +4,7 @@ import com.leadingsoft.bizfuse.common.jpa.model.AbstractAuditModel;
 import lombok.Data;
 import sdc.model.authentication.User;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -50,4 +47,7 @@ public class EqualAmountResult extends AbstractAuditModel {
      * 是否已还款
      */
     private boolean isPayment=false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private EqualAmountStatistic equalAmountStatistic;
 }

@@ -96,9 +96,11 @@ public class EqualAmountStatisticConvertor extends AbstractConvertor<EqualAmount
 
         for (EqualAmountBean equalAmountBean : equalAmountBeans) {
             EqualAmountResult equalAmountResult = new EqualAmountResult();
-            BeanUtils.copyProperties(equalAmountBean,equalAmountResult);
-            totalAmountMoney+=Integer.parseInt(String.valueOf(equalAmountResult.getRepaymentMoney()));
 
+            BeanUtils.copyProperties(equalAmountBean,equalAmountResult);
+
+            totalAmountMoney+=Integer.parseInt(String.valueOf(equalAmountResult.getRepaymentMoney()));
+            equalAmountResult.setEqualAmountStatistic(model);
             equalAmountResults.add(equalAmountResult);
         }
 

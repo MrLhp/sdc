@@ -76,6 +76,12 @@ public class EqualAmountResultController {
         return this.equalAmountResultConvertor.toResultDTO(model);
     }
 
+    @RequestMapping(value = "/detail/{id}",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public PageResultDTO<EqualAmountResultDTO> getByStatisticId(final Pageable pageable, @PathVariable final Long id) {
+        final Page<EqualAmountResult> models = this.equalAmountResultRepository.findAllByEqualAmountStatistic_Id(pageable, id);
+        return this.equalAmountResultConvertor.toResultDTO(models);
+    }
+
     /**
      * 新建操作
      *

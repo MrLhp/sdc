@@ -78,8 +78,8 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
             };
         }
     ]
-).controller('EqualAmountListController', ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountListService','EqualAmountPreviewService',
-        function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountListService,EqualAmountPreviewService) {
+).controller('EqualAmountListController', ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountListService','EqualAmountDetailService',
+        function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountListService,EqualAmountDetailService) {
             $scope.$on('$viewContentLoaded', function () {
                 App.initAjax();
                 $rootScope.settings.layout.pageBodySolid = true;
@@ -175,42 +175,53 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 };
 
                 $scope.embed = {
-                    columns: EqualAmountPreviewService.getSchema(),
-                    sort: EqualAmountPreviewService.getSort(),
-                    order: EqualAmountPreviewService.getOrder(),
-                    pageable: EqualAmountPreviewService.getPageable(),
+                    columns: EqualAmountDetailService.getSchema(),
+                    sort: EqualAmountDetailService.getSort(),
+                    order: EqualAmountDetailService.getOrder(),
+                    pageable: EqualAmountDetailService.getPageable(),
                     rows: []
                 };
 
                 $scope.list();
+                $scope.detailid;
                 $scope.listEmbed = function (row) {
-                    EqualAmountPreviewService.list(function (res) {
+                    if (row !== undefined) {
+                        $scope.detailid=row.id;
+                    }
+                    EqualAmountDetailService.list({id:$scope.detailid},function (res) {
                         if ('success' == res.status) {
                             $scope.embed.rows = res.data;
+                            $scope.embed.pageable = res.pageable;
                         } else {
-                            toastr.error("", "查询异常！");
+                            if (result.errors.length >= 0) {
+                                angular.forEach(result.errors, function (each) {
+                                    toastr.error("", each.errmsg);
+                                });
+                            } else {
+                                toastr.error("", "查询异常！");
+                            }
                         }
                     })
                 };
             });
 
             $scope.onRowClicked = function (row) {
-                EqualAmountPreviewService.setStoredPage(0);
+                EqualAmountDetailService.setStoredPage(0);
                 $scope.listEmbed(row);
             };
 
 
             $scope.$watch('embed.pageable.size', function (newVal, oldVal) {
                 if (newVal == oldVal) return;
-                EqualAmountPreviewService.setSize(newVal);
-                $scope.listEmbed($scope.model.id);
+                EqualAmountDetailService.setSize(newVal);
+                $scope.listEmbed($location.detailid);
             });
 
 
             $scope.$watch('embed.pageable.number', function (newVal, oldVal) {
                 if (newVal == oldVal) return;
-                EqualAmountPreviewService.setStoredPage(newVal);
-                $scope.listEmbed($scope.model.id);
+                EqualAmountDetailService.setStoredPage(newVal);
+                $scope.listEmbed($location.detailid);
             });
         }
     ]
