@@ -85,7 +85,7 @@ angular.module("MetronicApp").service("UrlConfigService", function () {
                 searchPreviewUrl: Host + RootPath + "/w/equalAmountResults/preview",
                 saveEqualAmountUrl: Host + RootPath + "/w/equalAmountStatistics"
             },
-            list:{
+            statistics:{
                 searchListUrl: Host + RootPath + "/w/equalAmountStatistics/s",
             }
         }
