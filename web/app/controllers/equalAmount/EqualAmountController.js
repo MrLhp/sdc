@@ -237,4 +237,8 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
         let even = _.find(equalAmountSources, {"key": value});
         return even?even.text:value;
     }
-}]);
+}]).filter("isPaymentFilter",function () {
+    return function (value) {
+        return value?"已还款":"未还款";
+    }
+});

@@ -5,6 +5,24 @@
         <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row.id,'del')">删除</button>
     </div>
 </script>
+<script type="text/ng-template" id="dateSel.html">
+    <div class="form-group">
+        <div date-time-append class="input-group">
+            <input class="form-control"
+                   placeholder="实际还款日期"
+                   ng-model="condition.realRepaymentDate"
+                   format="YYYY-MM-DD"
+                   date-time max-view="year" min-view="date" view="month"
+                   required
+                   auto-close="true"/>
+            <span class="input-group-btn">
+                <button class="btn default" type="button">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</script>
 <div class="list-content">
     <div class="row">
         <div class="col-md-12">
@@ -36,7 +54,8 @@
                                     <select class="form-control ng-touched" data-placeholder="贷款来源"
                                             required
                                             ng-model="condition.equalAmountSource" select2>
-                                        <option ng-repeat="equalAmountSource in equalAmountSources" value="{{equalAmountSource.key}}"
+                                        <option ng-repeat="equalAmountSource in equalAmountSources"
+                                                value="{{equalAmountSource.key}}"
                                                 ng-bind="equalAmountSource.text"></option>
                                     </select>
                                 </div>
@@ -49,7 +68,8 @@
                                     <select class="form-control ng-touched" data-placeholder="贷款类型"
                                             required
                                             ng-model="condition.equalAmountType" select2>
-                                        <option ng-repeat="equalAmountType in equalAmountTypes" value="{{equalAmountType.key}}"
+                                        <option ng-repeat="equalAmountType in equalAmountTypes"
+                                                value="{{equalAmountType.key}}"
                                                 ng-bind="equalAmountType.text"></option>
                                     </select>
                                 </div>

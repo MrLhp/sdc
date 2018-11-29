@@ -64,7 +64,8 @@
             {name:'principal',label:'本金',sortable:true,filter: "number2Divide"},
             {name:'interest',label:'利息',sortable:true,filter: "number2Divide"},
             {name:'amountMoney',label:'剩余待还',sortable:true,filter: "number2Divide"},
-            {name:'isPayment',label:'已还款',sortable:true}
+            {name:'isPayment',label:'已还款',sortable:true,filter:"isPaymentFilter"},
+            {label:'实际还款日期',sortable:false,type: 'template',width:180, templateUrl: 'dateSel.html'}
         ];
 
         this._searchListUrl = UrlConfigService.urlConfig.equalAmount.result.searchListByStatisticsIdUrl;
