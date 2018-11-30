@@ -81,9 +81,12 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
 ).controller('EqualAmountListController', ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountListService','EqualAmountDetailService',
         function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountListService,EqualAmountDetailService) {
             $scope.$on('$viewContentLoaded', function () {
-                App.initAjax();
-                $rootScope.settings.layout.pageBodySolid = true;
-                $rootScope.settings.layout.pageSidebarClosed = false;
+                $scope.$on('$viewContentLoaded', function () {
+                    App.initAjax();
+                    $rootScope.settings.layout.pageBodySolid = true;
+                    $rootScope.settings.layout.pageSidebarClosed = false;
+                });
+
 
                 $scope.columns = EqualAmountListService.getSchema();
                 $scope.sort = EqualAmountListService.getSort();
@@ -182,7 +185,6 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                     rows: []
                 };
 
-                $scope.list();
                 $scope.detailid;
                 $scope.listEmbed = function (row) {
                     if (row !== undefined) {
