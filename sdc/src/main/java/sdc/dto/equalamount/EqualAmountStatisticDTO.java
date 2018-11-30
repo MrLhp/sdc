@@ -8,6 +8,7 @@ import sdc.enums.EqualAmountSource;
 import sdc.enums.EqualAmountType;
 import sdc.model.equalamount.EqualAmountResult;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,4 +42,25 @@ public class EqualAmountStatisticDTO extends AbstractDTO {
      */
     @ApiModelProperty("贷款来源")
     private EqualAmountSource equalAmountSource;
+
+    /**
+     * 贷款利率
+     */
+    private double interestRate;
+    /**
+     * 利息折扣
+     */
+    private double interestRebate;
+    /**
+     * 贷款额度
+     */
+    private double quota;
+    /**
+     * 贷款开始时间
+     */
+    private Date dateOfLoan;
+    /**
+     * 分期数
+     */
+    private int stageNumberOfMonth;
 }

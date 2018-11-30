@@ -45,7 +45,6 @@ public class EqualAmountResultConvertor extends AbstractConvertor<EqualAmountRes
         dto.setInterest(model.getInterest());
         dto.setAmountMoney(model.getAmountMoney());
         dto.setPayment(model.isPayment());
-
         return dto;
     }
 

@@ -7,6 +7,7 @@ import sdc.enums.EqualAmountType;
 import sdc.model.authentication.User;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class EqualAmountStatistic extends AbstractAuditModel {
     @ManyToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EqualAmountResult> result;
 
     /**
@@ -39,4 +40,26 @@ public class EqualAmountStatistic extends AbstractAuditModel {
      */
     @Enumerated(EnumType.STRING)
     private EqualAmountSource equalAmountSource;
+
+    /**
+     * 贷款利率
+     */
+    private double interestRate;
+    /**
+     * 利息折扣
+     */
+    private double interestRebate;
+    /**
+     * 贷款额度
+     */
+    private double quota;
+    /**
+     * 贷款开始时间
+     */
+    @Temporal(TemporalType.DATE)
+    private Date dateOfLoan;
+    /**
+     * 分期数
+     */
+    private int stageNumberOfMonth;
 }

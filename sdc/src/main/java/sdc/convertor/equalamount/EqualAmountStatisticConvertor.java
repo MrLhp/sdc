@@ -47,7 +47,11 @@ public class EqualAmountStatisticConvertor extends AbstractConvertor<EqualAmount
         dto.setAmountTotalMoney(model.getAmountTotalMoney());
         dto.setEqualAmountType(model.getEqualAmountType());
         dto.setEqualAmountSource(model.getEqualAmountSource());
-
+        dto.setInterestRate(model.getInterestRate());
+        dto.setInterestRebate(model.getInterestRebate());
+        dto.setQuota(model.getQuota());
+        dto.setStageNumberOfMonth(model.getStageNumberOfMonth());
+        dto.setDateOfLoan(model.getDateOfLoan());
         return dto;
     }
 
@@ -83,6 +87,11 @@ public class EqualAmountStatisticConvertor extends AbstractConvertor<EqualAmount
         model.setEqualAmountType(dto.getEqualAmountType());
         model.setEqualAmountSource(dto.getEqualAmountSource());
         model.setResult(equalAmountResults);
+        model.setQuota(dto.getQuota());
+        model.setInterestRate(dto.getInterestRate());
+        model.setInterestRebate(dto.getInterestRebate());
+        model.setDateOfLoan(dto.getDateOfLoan());
+        model.setStageNumberOfMonth(dto.getStageNumberOfMonth());
 
         List<EqualAmountBean> equalAmountBeans;
         if (dto.getEqualAmountType().equals(EqualAmountType.interest)) {
