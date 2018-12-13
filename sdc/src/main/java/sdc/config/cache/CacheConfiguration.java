@@ -6,10 +6,14 @@ import com.hazelcast.config.MapConfig;
 import com.hazelcast.config.MaxSizeConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.spring.cache.HazelcastCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +30,15 @@ import javax.annotation.PreDestroy;
 @Configuration
 @EnableCaching
 @AutoConfigureBefore(value = { WebConfiguration.class, DatabaseConfiguration.class })
-public class CacheConfiguration {
+public class CacheConfiguration  extends CachingConfigurerSupport {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
 
     private final Environment env;
+
+    @Qualifier("hazelcastInstance")
+    @Autowired
+    HazelcastInstance hazelcastInstance;
 
     public CacheConfiguration(Environment env) {
         this.env = env;
@@ -42,14 +50,15 @@ public class CacheConfiguration {
         Hazelcast.shutdownAll();
     }
 
+    @Override
     @Bean
-    public CacheManager cacheManager(HazelcastInstance hazelcastInstance) {
+    public CacheManager cacheManager() {
         log.debug("Starting HazelcastCacheManager");
-        CacheManager cacheManager = new com.hazelcast.spring.cache.HazelcastCacheManager(hazelcastInstance);
+        CacheManager cacheManager = new HazelcastCacheManager(hazelcastInstance);
         return cacheManager;
     }
 
-    @Bean
+    @Bean(name = "hazelcastInstance")
     public HazelcastInstance hazelcastInstance(CacheProperties properties) {
         log.debug("Configuring Hazelcast");
         Config config = new Config();
