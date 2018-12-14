@@ -3,15 +3,20 @@ package sdc.util;
 import com.leadingsoft.bizfuse.common.web.utils.json.JsonUtils;
 import org.junit.Test;
 import sdc.bean.EqualAmountBean;
+import sdc.model.equalamount.EqualAmountResult;
+import sdc.model.equalamount.EqualAmountStatistic;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 等额本金
@@ -73,6 +78,46 @@ public class EqualAmountOfPrincipal {
         }
 
         return result;
+    }
+
+    public static void calcPrincipal(EqualAmountStatistic model, Map<Integer, EqualAmountResult> resultMap) {
+        List<EqualAmountResult> equalAmountResultList = new LinkedList<>();
+        LocalDateTime s1 = null;
+        LocalDateTime e1 = null;
+        //如果是第一条记录，就从贷款开始日期计算,以及其它相关属性
+        Date startDate = model.getDateOfLoan();
+        BigDecimal _quota = new BigDecimal(model.getQuota());
+
+        for (Map.Entry<Integer, EqualAmountResult> entry : resultMap.entrySet()) {
+            EqualAmountResult equalAmountResult = entry.getValue();
+            EqualAmountResult beforeEqualAmountResult = resultMap.get(entry.getKey() - 1);
+            if (equalAmountResult.getNo() != 1) {
+                //第一条以后的记录，就从上一次结束日期开始计算
+                startDate = beforeEqualAmountResult.getRepaymentDate();
+                _quota = BigDecimal.valueOf(beforeEqualAmountResult.getAmountMoney());
+            }
+
+            s1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(startDate.getTime()), ZoneId.systemDefault());
+            e1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(equalAmountResult.getRepaymentDate().getTime()), ZoneId.systemDefault());
+
+            long abs = Math.abs(ChronoUnit.HOURS.between(e1, s1));
+            BigDecimal days = new BigDecimal(abs).divide(BigDecimal.valueOf(24)).setScale(2,RoundingMode.HALF_UP);
+
+            equalAmountResult.setDays(days.intValue());
+            if (equalAmountResult.getNo() == 1) {
+                equalAmountResult.setAmountMoney(_quota.longValue()*100 - equalAmountResult.getPrincipal());
+            } else {
+                long amountMoney = beforeEqualAmountResult.getAmountMoney() - equalAmountResult.getPrincipal();
+                if (amountMoney > 0) {
+                    equalAmountResult.setAmountMoney(amountMoney);
+                }
+            }
+            equalAmountResultList.add(equalAmountResult);
+        }
+        long sumRes = equalAmountResultList.stream().filter(o -> (o.isPayment() == false)).mapToLong(EqualAmountResult::getRepaymentMoney).sum();
+        model.setAmountTotalMoney(sumRes);
+        model.getResult().clear();
+        model.getResult().addAll(equalAmountResultList);
     }
 
     @Test

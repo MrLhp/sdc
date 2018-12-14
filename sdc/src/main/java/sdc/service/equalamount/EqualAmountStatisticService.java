@@ -1,5 +1,6 @@
 package sdc.service.equalamount;
 
+import sdc.dto.equalamount.PaymentEqualAmountDTO;
 import sdc.model.equalamount.EqualAmountStatistic;
 
 /**
@@ -28,9 +29,10 @@ public interface EqualAmountStatisticService {
      * 更新
      *
      * @param model 编辑后的资源实例
+     * @param dto
      * @return 修改后的对象
      */
-    EqualAmountStatistic update(EqualAmountStatistic model);
+    EqualAmountStatistic update(EqualAmountStatistic model, PaymentEqualAmountDTO dto);
     
     /**
      * 删除

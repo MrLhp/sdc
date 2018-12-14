@@ -2,6 +2,7 @@ package sdc.controller.equalamount;
 
 import javax.validation.Valid;
 
+import com.leadingsoft.bizfuse.common.web.utils.json.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import sdc.bean.EqualAmountBean;
 import sdc.convertor.equalamount.EqualAmountResultConvertor;
 import sdc.dto.equalamount.EqualAmountPreviewDTO;
 import sdc.dto.equalamount.EqualAmountResultDTO;
+import sdc.dto.equalamount.EqualAmountStatisticDTO;
 import sdc.enums.EqualAmountType;
 import sdc.model.equalamount.EqualAmountResult;
 import sdc.service.equalamount.EqualAmountResultService;
@@ -123,7 +125,7 @@ public class EqualAmountResultController {
     /**
      * 删除操作
      *
-     * @param Id 资源ID
+     * @param id 资源ID
      * @return 操作结果
      */
     @Timed

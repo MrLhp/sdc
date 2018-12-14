@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,14 +22,19 @@ import com.leadingsoft.bizfuse.common.web.dto.result.PageResultDTO;
 import sdc.convertor.equalamount.EqualAmountStatisticConvertor;
 import sdc.dto.equalamount.EqualAmountPreviewDTO;
 import sdc.dto.equalamount.EqualAmountStatisticDTO;
+import sdc.dto.equalamount.PaymentEqualAmountDTO;
 import sdc.model.authentication.User;
+import sdc.model.equalamount.EqualAmountResult;
 import sdc.model.equalamount.EqualAmountStatistic;
+import sdc.repository.equalamount.EqualAmountResultRepository;
 import sdc.service.equalamount.EqualAmountStatisticService;
 import sdc.repository.equalamount.EqualAmountStatisticRepository;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 
 /**
  * EqualAmountStatistic的管理接口
@@ -96,27 +102,24 @@ public class EqualAmountStatisticController {
     /**
      * 更新操作
      *
-     * @param id 更新资源的ID
-     * @param equalAmountStatisticDTO 更新资源的DTO
+     * @param dto 更新资源的DTO
      * @return 更新后资源
      */
     @Timed
     @ApiOperation(value = "更新操作", notes = "")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces=MediaType.APPLICATION_JSON_VALUE)
-    public ResultDTO<EqualAmountStatisticDTO> update(@PathVariable final Long id, @RequestBody @Valid final EqualAmountStatisticDTO equalAmountStatisticDTO) {
-        equalAmountStatisticDTO.setId(id);
-        final EqualAmountStatistic model = this.equalAmountStatisticConvertor.toModel(equalAmountStatisticDTO);
-        this.equalAmountStatisticService.update(model);
-        if (log.isInfoEnabled()) {
-            log.info("{} instance {} was updated.", EqualAmountStatistic.class.getSimpleName(), model.getId());
+    public ResultDTO<Void> update(@RequestBody @Valid final PaymentEqualAmountDTO dto) {
+        EqualAmountStatistic model = this.equalAmountStatisticRepository.findOne(dto.getId());
+        if (model != null) {
+            this.equalAmountStatisticService.update(model,dto);
         }
-        return this.equalAmountStatisticConvertor.toResultDTO(model);
+        return ResultDTO.success();
     }
 
     /**
      * 删除操作
      *
-     * @param Id 资源ID
+     * @param id 资源ID
      * @return 操作结果
      */
     @Timed

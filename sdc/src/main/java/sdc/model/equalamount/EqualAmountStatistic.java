@@ -7,6 +7,7 @@ import sdc.enums.EqualAmountType;
 import sdc.model.authentication.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class EqualAmountStatistic extends AbstractAuditModel {
     @ManyToOne
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EqualAmountResult> result;
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "equalAmountStatistic")
+    private List<EqualAmountResult> result = new ArrayList<>();
 
     /**
      * 贷款名称

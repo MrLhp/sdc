@@ -9,7 +9,7 @@ import sdc.model.equalamount.EqualAmountStatistic;
 /**
  * EqualAmountStatisticRepository
  */
-public interface EqualAmountStatisticRepository extends Repository<EqualAmountStatistic, Long> {
+public interface EqualAmountStatisticRepository extends Repository<EqualAmountStatistic, Long>,EqualAmountStatisticRepositoryCustom {
 
     Page<EqualAmountStatistic> findAll(Pageable pageable);
 
@@ -18,5 +18,4 @@ public interface EqualAmountStatisticRepository extends Repository<EqualAmountSt
     EqualAmountStatistic save(EqualAmountStatistic model);
 
     void delete(Long id);
-
 }

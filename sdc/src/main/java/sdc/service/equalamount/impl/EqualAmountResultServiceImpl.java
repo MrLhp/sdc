@@ -38,7 +38,6 @@ public class EqualAmountResultServiceImpl implements EqualAmountResultService {
 
     @Override
     public EqualAmountResult update(EqualAmountResult model) {
-        // TODO: 业务逻辑
         return equalAmountResultRepository.save(model);
     }
 

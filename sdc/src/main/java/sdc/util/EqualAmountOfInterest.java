@@ -1,17 +1,22 @@
 package sdc.util;
 
-import com.leadingsoft.bizfuse.common.web.utils.json.JsonUtils;
 import org.junit.Test;
 import sdc.bean.EqualAmountBean;
+import sdc.model.equalamount.EqualAmountResult;
+import sdc.model.equalamount.EqualAmountStatistic;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.LongStream;
 
 /**
  * 等额本息
@@ -80,11 +85,69 @@ public class EqualAmountOfInterest {
         return result;
     }
 
+    public static void calcInterest(EqualAmountStatistic model, Map<Integer, EqualAmountResult> resultMap) {
+        LocalDateTime s1 = null;
+        LocalDateTime e1 = null;
+        //如果是第一条记录，就从贷款开始日期计算,以及其它相关属性
+        Date startDate = model.getDateOfLoan();
+        double interestRate = model.getInterestRate();
+        BigDecimal _quota = new BigDecimal(model.getQuota());
+        BigDecimal _interestRate = new BigDecimal(model.getInterestRate());
+        double interestRebate = model.getInterestRebate();
+
+        List<EqualAmountResult> equalAmountResultList = new LinkedList<>();
+
+        for (Map.Entry<Integer, EqualAmountResult> entry : resultMap.entrySet()) {
+            EqualAmountResult equalAmountResult = entry.getValue();
+            EqualAmountResult beforeEqualAmountResult = resultMap.get(entry.getKey() - 1);
+            if (equalAmountResult.getNo() != 1) {
+                //第一条以后的记录，就从上一次结束日期开始计算
+                startDate = beforeEqualAmountResult.getRepaymentDate();
+                _quota = BigDecimal.valueOf(beforeEqualAmountResult.getAmountMoney()/100);
+            }
+
+            s1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(startDate.getTime()), ZoneId.systemDefault());
+            e1 = LocalDateTime.ofInstant(Instant.ofEpochMilli(equalAmountResult.getRepaymentDate().getTime()), ZoneId.systemDefault());
+
+            long abs = Math.abs(ChronoUnit.HOURS.between(e1, s1));
+            BigDecimal days = new BigDecimal(abs).divide(BigDecimal.valueOf(24)).setScale(2,RoundingMode.HALF_UP);
+
+            if (interestRebate > 0) {
+                _interestRate = _quota.multiply(days).multiply(BigDecimal.valueOf(interestRate))
+                        .multiply(BigDecimal.valueOf(interestRebate)).setScale(2,RoundingMode.HALF_UP);
+            }else{
+                _interestRate = _quota.multiply(days).multiply(BigDecimal.valueOf(interestRate))
+                        .setScale(2,RoundingMode.HALF_UP);
+            }
+
+            equalAmountResult.setDays(days.intValue());
+            equalAmountResult.setInterest(_interestRate.multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).longValue());
+            equalAmountResult.setRepaymentMoney(equalAmountResult.getPrincipal()+equalAmountResult.getInterest());
+            if (equalAmountResult.getNo() == 1) {
+                equalAmountResult.setAmountMoney(_quota.longValue()*100 - equalAmountResult.getPrincipal());
+            } else {
+                long amountMoney = beforeEqualAmountResult.getAmountMoney() - equalAmountResult.getPrincipal();
+                if (amountMoney > 0) {
+                    equalAmountResult.setAmountMoney(amountMoney);
+                }
+
+            }
+
+            equalAmountResultList.add(equalAmountResult);
+        }
+        long sumRes = equalAmountResultList.stream().filter(o -> (o.isPayment() == false)).mapToLong(EqualAmountResult::getRepaymentMoney).sum();
+        model.setAmountTotalMoney(sumRes);
+        model.getResult().clear();
+        model.getResult().addAll(equalAmountResultList);
+    }
+
     @Test
     public void test() {
-        List<EqualAmountBean> equalAmountBeans = this.execEqualAmountOfInterest(20000, 0.0004, 0.9, new Date(), 12);
+        /*List<EqualAmountBean> equalAmountBeans = this.execEqualAmountOfInterest(20000, 0.0004, 0.9, new Date(), 12);
         for (EqualAmountBean equalAmountBean : equalAmountBeans) {
             System.out.println(JsonUtils.pojoToJson(equalAmountBean));
-        }
+        }*/
+        LocalDateTime s1 = LocalDateTime.of(2018, 12, 01,8,30);
+        LocalDateTime s2 = LocalDateTime.of(2018, 11, 01,17,0);
     }
 }
