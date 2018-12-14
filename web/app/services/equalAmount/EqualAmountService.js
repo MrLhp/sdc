@@ -34,6 +34,8 @@
         this._schema = [
             {name:'username',label:'用户名称',sortable:true},
             {name:'equalAmountName',label:'贷款名称',sortable:true},
+            {name:'dateOfLoan',label:'贷款开始时间',filter:"timestampToDate"},
+            {name:'stageNumberOfMonth',label:'分期数'},
             {name:'amountTotalMoney',label:'总待还金额',sortable:true,filter: "number2Divide"},
             {name:'equalAmountType',label:'贷款类型',sortable:true,filter:"equalAmountTypesFilter"},
             {name:'equalAmountSource',label:'贷款来源',sortable:true,filter:"equalAmountSourcesFilter"},
@@ -59,22 +61,27 @@
         this._schema = [
             {name:'no',label:'序号',sortable:true},
             {name:'days',label:'周期',sortable:true},
-            {name:'repaymentDate',label:'还款日',sortable:true,filter:"timestampToDate"},
+            {name:'repaymentDate',label:'还款日',sortable:true,filter:"timestampToDateExt"},
             {name:'repaymentMoney',label:'还款额度',sortable:true,filter: "number2Divide"},
             {name:'principal',label:'本金',sortable:true,filter: "number2Divide"},
             {name:'interest',label:'利息',sortable:true,filter: "number2Divide"},
-            {name:'amountMoney',label:'剩余待还',sortable:true,filter: "number2Divide"},
-            {name:'isPayment',label:'已还款',sortable:true,filter:"isPaymentFilter"},
-            {label:'实际还款日期',sortable:false,type: 'template',width:180, templateUrl: 'dateSel.html'}
+            {name:'amountMoney',label:'剩余待还本金',sortable:true,filter: "number2Divide"},
+            {name:'payment',label:'已还款',sortable:true,filter:"isPaymentFilter"},
+            {label:'实际还款日期',sortable:false,type: 'template',width:180, templateUrl: 'dateSel.html'},
+            {label:'操作',sortable:false,type: 'template',width:80, templateUrl: 'saveRealDate.html'}
         ];
 
         this._searchListUrl = UrlConfigService.urlConfig.equalAmount.result.searchListByStatisticsIdUrl;
+        this._updateUrl = UrlConfigService.urlConfig.equalAmount.statistics.updateByStatisticsIdUrl;
 
         this._sort = 'no';
         this._order = 'asc';
 
         BaseListService.call(this, this._searchListUrl, this._url, $resource, this._schema);
 
+        this.updateEqualAmount=function (id,model) {
+            return this.$resource(this._updateUrl,{id: id}, {'updateEqualAmount': {method: 'PUT'}}).updateEqualAmount(model);
+        }
     }
 
     EqualAmountDetailService.prototype = new BaseListService().prototype;

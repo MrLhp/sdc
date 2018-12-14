@@ -186,9 +186,11 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 };
 
                 $scope.detailid;
+                $scope.parentRows;
                 $scope.listEmbed = function (row) {
                     if (row !== undefined) {
                         $scope.detailid=row.id;
+                        $scope.parentRows=row;
                     }
                     EqualAmountDetailService.list({id:$scope.detailid},function (res) {
                         if ('success' == res.status) {
@@ -225,6 +227,23 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 EqualAmountDetailService.setStoredPage(newVal);
                 $scope.listEmbed($location.detailid);
             });
+
+            $scope.saveRealDate = function (row) {
+                let paymentDto={
+                    id:$scope.parentRows.id,
+                    statisticId: $scope.parentRows.id,
+                    resultDTOS:[]
+                };
+                paymentDto.resultDTOS.push({resultId:row.id,resultNo:row.no,realRepaymentDate:row.repaymentDate});
+                EqualAmountDetailService.updateEqualAmount(row.id, paymentDto).$promise.then(function (result) {
+                    if ('success' == result.status) {
+                        $scope.listEmbed($location.detailid);
+                    }else {
+                        toastr.error("", "查询异常！");
+                    }
+
+                });
+            }
         }
     ]
 ).filter("equalAmountTypesFilter",["EnumService",function (EnumService) {
@@ -239,8 +258,16 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
         let even = _.find(equalAmountSources, {"key": value});
         return even?even.text:value;
     }
-}]).filter("isPaymentFilter",function () {
+}]).filter("isPaymentFilter",["$filter",function ($filter) {
     return function (value) {
         return value?"已还款":"未还款";
     }
-});
+}]).filter("timestampToDateExt",["$filter",function ($filter) {
+    return function (value) {
+        if (value._i != undefined) {
+            value=value._i;
+        }
+        const filter = $filter("date");
+        return filter(value, "yyyy-MM-dd");
+    }
+}]);

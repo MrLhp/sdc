@@ -5,12 +5,17 @@
         <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row.id,'del')">删除</button>
     </div>
 </script>
+<script type="text/ng-template" id="saveRealDate.html">
+    <div class="text-center">
+        <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row,'saveRealDate')">保存</button>
+    </div>
+</script>
 <script type="text/ng-template" id="dateSel.html">
     <div class="form-group">
         <div date-time-append class="input-group">
             <input class="form-control"
                    placeholder="实际还款日期"
-                   ng-model="condition.realRepaymentDate"
+                   ng-model="row.repaymentDate"
                    format="YYYY-MM-DD"
                    date-time max-view="year" min-view="date" view="month"
                    required
