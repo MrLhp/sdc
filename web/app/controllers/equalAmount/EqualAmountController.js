@@ -196,6 +196,7 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                         if ('success' == res.status) {
                             $scope.embed.rows = res.data;
                             $scope.embed.pageable = res.pageable;
+
                         } else {
                             if (result.errors.length >= 0) {
                                 angular.forEach(result.errors, function (each) {

@@ -92,6 +92,15 @@ angular.module("MetronicApp").service("UrlConfigService", function () {
             result:{
                 searchListByStatisticsIdUrl:Host + RootPath + "/w/equalAmountResults/detail/:id"
             }
+        },
+        billingCycle:{
+            searchListUrl: Host + RootPath + "/w/billingCycles/s",
+            url: Host + RootPath + "/w/billingCycles/:id",
+        },
+        billingRecords:{
+            searchListUrl: Host + RootPath + "/w/billingRecords/s/:id",
+            url: Host + RootPath + "/w/billingRecords/:id",
+            saveUrl: Host + RootPath + "/w/billingRecords"
         }
     };
 });

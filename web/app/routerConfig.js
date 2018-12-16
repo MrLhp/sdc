@@ -1044,5 +1044,104 @@ angular.module("MetronicApp").config(['$stateProvider', '$urlRouterProvider', fu
                 }]
             }
         })
-
+        .state('billingCycleCreate',{
+            url: "/billingCycle/create.html",
+            templateUrl: "views/billingCycle/edit.html",
+            data: {
+                pageTitle: "新增账单",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "新增账单"}
+                ]
+            },
+            controller:"BillingCycleEditController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/directives/ngTable/directive.js',
+                            'app/controllers/billingCycle/BillingCycleController.js',
+                            'app/services/billingCycle/BillingCycleService.js'
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('billingCycleEdit',{
+            url: "/billingCycle/edit.html",
+            templateUrl: "views/billingCycle/edit.html",
+            data: {
+                pageTitle: "编辑账单",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "编辑账单"}
+                ]
+            },
+            controller:"BillingCycleEditController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/directives/ngTable/directive.js',
+                            'app/controllers/billingCycle/BillingCycleController.js',
+                            'app/services/billingCycle/BillingCycleService.js'
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('billingCycleView',{
+            url: "/billingCycle/view.html",
+            templateUrl: "views/billingCycle/view.html",
+            data: {
+                pageTitle: "查看账单",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "查看账单"}
+                ]
+            },
+            controller:"BillingCycleEditController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/directives/ngTable/directive.js',
+                            'app/controllers/billingCycle/BillingCycleController.js',
+                            'app/services/billingCycle/BillingCycleService.js'
+                        ]
+                    })
+                }]
+            }
+        })
+        .state('billingCycleList',{
+            url: "/billingCycle/list.html",
+            templateUrl: "views/billingCycle/list.html",
+            data: {
+                pageTitle: "账单列表",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "账单列表"}
+                ]
+            },
+            controller:"BillingCycleController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/directives/ngTable/directive.js',
+                            'app/controllers/billingCycle/BillingCycleController.js',
+                            'app/services/billingCycle/BillingCycleService.js'
+                        ]
+                    })
+                }]
+            }
+        })
 }]);

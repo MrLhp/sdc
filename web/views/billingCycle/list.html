@@ -1,0 +1,59 @@
+<script type="text/ng-template" id="operation.html">
+    <div class="text-center">
+        <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row.id,'view')">查看</button>
+        <button class="btn btn-edit btn-xs" data-ng-click="onActionClick(row.id,'edit')">编辑</button>
+        <button class="btn btn-common btn-xs" data-ng-click="onActionClick(row.id,'del')">删除</button>
+    </div>
+</script>
+<div class="list-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <form class="form-horizontal" role="form">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">用户名称</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="请输入用户名称" enter-search="search"
+                                           ng-model="condition.username"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label col-md-4">贷款名称</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" placeholder="请输入贷款名称" enter-search="search"
+                                           ng-model="condition.equalAmountName"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button class="btn red delete ng-scope" ng-click="search()">
+                            <i class="fa fa-search"></i>
+                            <span>查询</span>
+                        </button>
+                        <button class="btn green-meadow delete ng-scope" ng-click="create()">
+                            <i class="fa fa-plus"></i>
+                            <span>新增</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ng-table
+                    columns="columns"
+                    sort="sort"
+                    order="order"
+                    rows="rows"
+                    pageable="pageable">
+            </ng-table>
+        </div>
+    </div>
+</div>

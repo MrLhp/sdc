@@ -21,6 +21,11 @@ angular.module("MetronicApp").service("EnumService", function () {
             {"key":"antBorrow","text":"蚂蚁借呗"},
             {"key":"antFlower","text":"蚂蚁花呗"},
             {"key":"cmbCreditCard","text":"招商信用卡"}
+        ],
+        /*账单类型*/
+        "billingType":[
+            {"key":"inPay","text":"应收"},
+            {"key":"outPay","text":"应付"}
         ]
     };
     this.get = function (key) {
