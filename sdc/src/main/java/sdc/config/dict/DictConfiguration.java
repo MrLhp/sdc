@@ -6,8 +6,10 @@ import com.leadingsoft.bizfuse.base.dict.annotation.EnableBizfuseDict;
 
 /**
  * 数据字典配置
+ * @author haipei
  */
 @Configuration
 @EnableBizfuseDict
-public class DitcConfiguration {
+public class DictConfiguration {
+
 }
