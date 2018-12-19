@@ -1,6 +1,6 @@
 <div style="padding-bottom: 10px;">
 
-    <div ng-if="!notpageable" class="row">
+    <div ng-if="!notheadpageable" class="row">
         <div class="col-md-5" style="line-height: 36px;">
             每页显示
             <select ng-if="!pageableConfig" data-ng-model="pageable.size" convert-to-number>
@@ -58,7 +58,7 @@
             <tr data-ng-if="!isEmpty(rows)" ng-repeat="row in rows" ng-init="outerIndex = $index" data-ng-click="onRowClicked(row, $event)">
                 <td ng-repeat="column in columns" style="white-space:nowrap;">
                     <span data-ng-if="typeOf(column) === 'seq'" ng-bind="pageable ? ((pageable.number) * pageable.size + outerIndex + 1) : (outerIndex+1)"></span>
-                    <input data-ng-if="typeOf(column) === 'checkbox'" type="checkbox" data-ng-model='row.chk'
+                    <input data-ng-if="typeOf(column) === 'checkbox'" type="checkbox" ng-checked="row.selected" data-ng-model='row.chk'
                            data-ng-change="onCheckboxChecked(row)"/>
                     <input data-ng-if="typeOf(column) === 'radio'" type="radio"
                            name="ngRadio"

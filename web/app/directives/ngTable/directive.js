@@ -14,6 +14,7 @@ angular.module("MetronicApp").directive('ngTable', ['$timeout', function ($timeo
             pageable: '=',
             rows: '=',
             notpageable: '=',
+            notheadpageable:'=',
             embed: '=',
             pageableConfig: '='
         },
@@ -159,16 +160,22 @@ angular.module("MetronicApp").directive('ngTable', ['$timeout', function ($timeo
             };
 
             $scope.onRowClicked = function (row, $event) {
-                if (!$scope.embed) return;
-                if ($($event.currentTarget).next('tr.embed-table').size() > 0 && !$('.embed-table').is(":hidden")) {
-                    $('.embed-table').hide();
-                    return;
+                if (!$scope.embed){
+                    if ($scope.$parent.hasOwnProperty('onRowClicked')) {
+                        $scope.$parent['onRowClicked'](row,$event);
+                    }
+                }else{
+                    if ($($event.currentTarget).next('tr.embed-table').size() > 0 && !$('.embed-table').is(":hidden")) {
+                        $('.embed-table').hide();
+                        return;
+                    }
+                    if ($scope.$parent.hasOwnProperty('onRowClicked')) {
+                        $scope.$parent['onRowClicked'](row, $scope.callbackfn);
+                    }
+                    $scope.tablec.insertAfter($event.currentTarget);    //移动节点
+                    $('.embed-table').show();
                 }
-                if ($scope.$parent.hasOwnProperty('onRowClicked')) {
-                    $scope.$parent['onRowClicked'](row, $scope.callbackfn);
-                }
-                $scope.tablec.insertAfter($event.currentTarget);    //移动节点
-                $('.embed-table').show();
+
             }
         }]
     };
