@@ -4,6 +4,7 @@ import com.leadingsoft.bizfuse.common.web.dto.AbstractDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import sdc.enums.RecordType;
 import sdc.model.billing.BillingCycle;
 
 import java.util.Date;
@@ -37,5 +38,8 @@ public class BillingRecordsDTO extends AbstractDTO {
      */
     @ApiModelProperty("描述")
     private String description;
-
+    /**
+     * 还款类型
+     */
+    private RecordType recordType;
 }

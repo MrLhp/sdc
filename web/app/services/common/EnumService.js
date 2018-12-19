@@ -26,6 +26,11 @@ angular.module("MetronicApp").service("EnumService", function () {
         "billingType":[
             {"key":"inPay","text":"应收"},
             {"key":"outPay","text":"应付"}
+        ],
+        /*还款类型*/
+        "recordType":[
+            {"key":"increase","text":"收入"},
+            {"key":"reduce","text":"支出"}
         ]
     };
     this.get = function (key) {

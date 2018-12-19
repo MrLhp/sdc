@@ -1044,6 +1044,31 @@ angular.module("MetronicApp").config(['$stateProvider', '$urlRouterProvider', fu
                 }]
             }
         })
+        .state('equalAmountEdit',{
+            url: "/equalAmount/edit.html",
+            templateUrl: "views/equalAmount/edit.html",
+            data: {
+                pageTitle: "编辑资金",
+                pageBar: [
+                    {href: "", class: "fa fa-home", title: "主页"},
+                    {href: "", class: "", title: "编辑资金"}
+                ]
+            },
+            controller:"EqualAmountEditController",
+            resolve:{
+                deps:[ '$ocLazyLoad' ,function ($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            'app/directives/ngTable/directive.js',
+                            'app/controllers/equalAmount/EqualAmountController.js',
+                            'app/services/equalAmount/EqualAmountService.js'
+                        ]
+                    })
+                }]
+            }
+        })
         .state('billingCycleCreate',{
             url: "/billingCycle/create.html",
             templateUrl: "views/billingCycle/edit.html",

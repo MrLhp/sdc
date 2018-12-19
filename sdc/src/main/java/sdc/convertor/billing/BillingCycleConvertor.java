@@ -67,7 +67,7 @@ public class BillingCycleConvertor extends AbstractConvertor<BillingCycle, Billi
         model.setBillingCreateDate(dto.getBillingCreateDate());
         model.setIsFinish(dto.getIsFinish());
         model.setBillingMoney(dto.getBillingMoney()*100);
-        model.setAmountMoney(dto.getAmountMoney());
+        model.setAmountMoney(dto.getAmountMoney()*100);
         model.setBillingType(dto.getBillingType());
 
         return model;

@@ -74,6 +74,34 @@ angular.module("MetronicApp").controller('BillingCycleController',
             $scope.create = function () {
                 $location.path("/billingCycle/create.html");
             };
+
+            $scope.del = function (id) {
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'confirm.html',
+                    controller: ["$scope", "$uibModalInstance", function (scope, $uibModalInstance) {
+                        scope.confirmContent = "确认删除该账单吗？";
+                        scope.btn_ok = function () {
+                            $uibModalInstance.close(id);
+                        };
+                        scope.btn_cancel = function () {
+                            $uibModalInstance.dismiss();
+                        };
+                    }]
+                });
+
+                modalInstance.result.then(function (id) {
+                    BillingCycleService.delete(id).$promise.then(function (result) {
+                        if ("success" == result.status) {
+                            gotoFirstPage();
+                            toastr.success("", "账单删除成功。");
+                        } else {
+                            for (var index in result.errors) {
+                                toastr.error(result.errors[index].errmsg, "账单删除失败");
+                            }
+                        }
+                    });
+                });
+            };
         }
     ]).controller('BillingCycleEditController',
     ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'BillingCycleService',
@@ -158,7 +186,7 @@ angular.module("MetronicApp").controller('BillingCycleController',
                 let modalInstance = $uibModal.open({
                     templateUrl: 'showBillingRecordModal.html',
                     controller: ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance) {
-
+                        $scope.recordTypes = EnumService.get("recordType");
                         $scope.btn_ok = function () {
                             $uibModalInstance.close($scope.record);
                         };

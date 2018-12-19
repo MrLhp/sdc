@@ -58,7 +58,7 @@ public class EqualAmountStatisticServiceImpl implements EqualAmountStatisticServ
 
         for (PaymentEqualAmountDTO.ResultDTO resultDTO : resultDTOS) {
             EqualAmountResult equalAmountResult = resultMap.get(resultDTO.getResultNo());
-            equalAmountResult.setPayment(true);
+            equalAmountResult.setPayment(resultDTO.getRealPayment());
             equalAmountResult.setRepaymentDate(resultDTO.getRealRepaymentDate());
             resultMap.put(resultDTO.getResultNo(), equalAmountResult);
         }
@@ -68,6 +68,8 @@ public class EqualAmountStatisticServiceImpl implements EqualAmountStatisticServ
         } else if (model.getEqualAmountType().equals(EqualAmountType.principal)) {
             EqualAmountOfPrincipal.calcPrincipal(model,resultMap);
         }
+
+        model.setEqualAmountName(dto.getEqualAmountName());
         return equalAmountStatisticRepository.save(model);
     }
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.leadingsoft.bizfuse.common.web.dto.AbstractConvertor;
 import sdc.dto.billing.BillingRecordsDTO;
+import sdc.enums.RecordType;
 import sdc.model.billing.BillingRecords;
 import sdc.service.billing.BillingRecordsService;
 import lombok.NonNull;
@@ -35,6 +36,7 @@ public class BillingRecordsConvertor extends AbstractConvertor<BillingRecords, B
         dto.setPaymentBillDate(model.getPaymentBillDate());
         dto.setPaymentMoney(model.getPaymentMoney());
         dto.setDescription(model.getDescription());
+        dto.setRecordType(model.getRecordType());
 
         return dto;
     }
@@ -46,6 +48,7 @@ public class BillingRecordsConvertor extends AbstractConvertor<BillingRecords, B
         model.setPaymentBillDate(dto.getPaymentBillDate());
         model.setPaymentMoney(dto.getPaymentMoney()*100);
         model.setDescription(dto.getDescription());
+        model.setRecordType(dto.getRecordType());
 
         return model;
     }
@@ -57,6 +60,7 @@ public class BillingRecordsConvertor extends AbstractConvertor<BillingRecords, B
         model.setPaymentBillDate(dto.getPaymentBillDate());
         model.setPaymentMoney(dto.getPaymentMoney()*100);
         model.setDescription(dto.getDescription());
+        model.setRecordType(dto.getRecordType());
 
         return model;
     }

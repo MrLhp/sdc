@@ -16,6 +16,8 @@ import java.util.List;
 @Setter
 public class PaymentEqualAmountDTO extends AbstractDTO {
     private long statisticId;
+    private String equalAmountName;
+
     private List<ResultDTO> resultDTOS = new LinkedList<>();
 
     @Setter
@@ -24,6 +26,7 @@ public class PaymentEqualAmountDTO extends AbstractDTO {
         private long resultId;
         private int resultNo;
         private Date realRepaymentDate;
+        private Boolean realPayment;
     }
 }
 

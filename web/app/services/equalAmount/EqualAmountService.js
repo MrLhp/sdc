@@ -43,11 +43,17 @@
         ];
 
         this._searchListUrl = UrlConfigService.urlConfig.equalAmount.statistics.searchListUrl;
+        this._url = UrlConfigService.urlConfig.equalAmount.statistics.url;
 
         this._sort = 'no';
         this._order = 'asc';
 
         BaseListService.call(this, this._searchListUrl, this._url, $resource, this._schema);
+
+        this.statisticsInfo = function (id) {
+            let resource = $resource(this._url,{id:id});
+            return resource.get();
+        };
 
     }
 
@@ -59,6 +65,7 @@
 (function (angular) {
     function EqualAmountDetailService($resource,UrlConfigService) {
         this._schema = [
+            {name: '', label: '选择', type: "checkbox"},
             {name:'no',label:'序号',sortable:true},
             {name:'days',label:'周期',sortable:true},
             {name:'repaymentDate',label:'还款日',sortable:true,filter:"timestampToDateExt"},
@@ -67,8 +74,8 @@
             {name:'interest',label:'利息',sortable:true,filter: "number2Divide"},
             {name:'amountMoney',label:'剩余待还本金',sortable:true,filter: "number2Divide"},
             {name:'payment',label:'已还款',sortable:true,filter:"isPaymentFilter"},
-            {label:'实际还款日期',sortable:false,type: 'template',width:180, templateUrl: 'dateSel.html'},
-            {label:'操作',sortable:false,type: 'template',width:80, templateUrl: 'saveRealDate.html'}
+            {label:'实际还款日期',sortable:false,type: 'template',width:180, templateUrl: 'selDate.html'},
+            // {label:'操作',sortable:false,type: 'template',width:80, templateUrl: 'saveRealDate.html'}
         ];
 
         this._searchListUrl = UrlConfigService.urlConfig.equalAmount.result.searchListByStatisticsIdUrl;

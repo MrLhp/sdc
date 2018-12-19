@@ -21,6 +21,8 @@ public interface BillingRecordsRepository extends Repository<BillingRecords, Lon
 
     BillingRecords save(BillingRecords model);
 
+    void deleteByBillingCycle_Id(Long billingCycle_id);
+
     void delete(Long id);
 
 }

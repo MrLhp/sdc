@@ -1,0 +1,147 @@
+<script type="text/ng-template" id="selDate.html">
+        <div date-time-append="" class="input-group">
+            <input id="repaymentDate" name="repaymentDate"
+                   class="form-control ng-valid ng-scope ng-valid-min ng-dirty ng-touched"
+                   ng-model="row.repaymentDate"
+                   date-time=""
+                   date-change="dateClick"
+                   format="YYYY-MM-DD" max-view="year" min-view="date" view="date" auto-close="true" min-date="nowDate"
+                   >
+            <span class="input-group-btn">
+                <button class="btn default" type="button">
+                    <i class="fa fa-calendar"></i>
+                </button>
+            </span>
+        </div>
+</script>
+<div class="form-content">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-back" ng-click="back()">返回</button>
+            <button class="btn btn-submit" ng-click="submit(form,formCorporation)">提交</button>
+            <button class="btn btn-reset" ng-click="reset()">重置</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            贷款基本信息
+                        </div>
+                        <div class="tools">
+                            <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                            <a href="" class="fullscreen" data-original-title="" title=""> </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <form name="form" class="form-horizontal" role="form" novalidate>
+                            <div class="form-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">贷款名称
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <input type="text" name="equalAmountName" class="form-control" placeholder="贷款名称" autocomplete="off" ng-model="model.equalAmountName" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">贷款开始时间
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <p class="form-control-static" ng-bind="model.dateOfLoan | timestampToDate"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">分期数
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <p class="form-control-static" ng-bind="model.stageNumberOfMonth"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">总待还金额
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <p class="form-control-static" ng-bind="model.amountTotalMoney"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">贷款类型
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <p class="form-control-static" ng-bind="model.equalAmountType|equalAmountTypesFilter"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">贷款来源
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-md-8">
+                                                <p class="form-control-static" ng-bind="model.equalAmountSource|equalAmountSourcesFilter"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box">
+                <div class="portlet-title">
+                    <div class="caption">
+                        分期还款明细
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse" data-original-title="" title="" style="width: 30px">收起</a>
+                        <a href="" class="fullscreen" style="color: #0c91e5" data-original-title="" title=""></a>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form name="formCorporation" role="form" novalidate>
+                        <div class="form-body" style="padding-top: 0px">
+                            <div class="row">
+                                <ng-table
+                                        columns="columns"
+                                        sort="sort"
+                                        order="order"
+                                        rows="rows"
+                                        notheadpageable="true"
+                                        embed="false"
+                                        pageable="pageable">
+                                </ng-table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

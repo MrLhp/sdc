@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.leadingsoft.bizfuse.common.web.exception.CustomRuntimeException;
+import sdc.repository.billing.BillingRecordsRepository;
 import sdc.service.billing.BillingCycleService;
 import sdc.model.billing.BillingCycle;
 import sdc.repository.billing.BillingCycleRepository;
@@ -19,6 +20,8 @@ public class BillingCycleServiceImpl implements BillingCycleService {
 
     @Autowired
     private BillingCycleRepository billingCycleRepository;
+    @Autowired
+    private BillingRecordsRepository billingRecordsRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -38,13 +41,14 @@ public class BillingCycleServiceImpl implements BillingCycleService {
 
     @Override
     public BillingCycle update(BillingCycle model) {
-        // TODO: 业务逻辑
+
         return billingCycleRepository.save(model);
     }
 
     @Override
+    @Transactional
     public void delete(@NonNull Long id) {
-        // TODO: 业务逻辑
+        billingRecordsRepository.deleteByBillingCycle_Id(id);
         billingCycleRepository.delete(id);
     }
 }

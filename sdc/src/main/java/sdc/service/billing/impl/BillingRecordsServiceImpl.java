@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.leadingsoft.bizfuse.common.web.exception.CustomRuntimeException;
+import sdc.enums.BillingType;
+import sdc.enums.RecordType;
 import sdc.model.billing.BillingCycle;
 import sdc.repository.billing.BillingCycleRepository;
 import sdc.service.billing.BillingRecordsService;
@@ -37,7 +39,26 @@ public class BillingRecordsServiceImpl implements BillingRecordsService {
     @Override
     public BillingRecords create(BillingRecords model) {
         BillingCycle billingCycle = billingCycleRepository.findOne(model.getBillingCycle().getId());
-        billingCycle.setAmountMoney(billingCycle.getAmountMoney() - model.getPaymentMoney());
+        if (billingCycle.getBillingType().equals(BillingType.inPay)) {
+            if (model.getRecordType().equals(RecordType.increase)) {
+                billingCycle.setAmountMoney(billingCycle.getAmountMoney() - model.getPaymentMoney());
+            } else if(model.getRecordType().equals(RecordType.reduce)) {
+                billingCycle.setAmountMoney(billingCycle.getAmountMoney() + model.getPaymentMoney());
+                billingCycle.setBillingMoney(billingCycle.getBillingMoney() + model.getPaymentMoney());
+            }
+        } else if (billingCycle.getBillingType().equals(BillingType.outPay)) {
+            if (model.getRecordType().equals(RecordType.increase)) {
+                billingCycle.setAmountMoney(billingCycle.getAmountMoney() + model.getPaymentMoney());
+                billingCycle.setBillingMoney(billingCycle.getBillingMoney() + model.getPaymentMoney());
+            } else if(model.getRecordType().equals(RecordType.reduce)) {
+                billingCycle.setAmountMoney(billingCycle.getAmountMoney() - model.getPaymentMoney());
+            }
+        }
+        if (billingCycle.getAmountMoney() > 0) {
+            billingCycle.setIsFinish(false);
+        } else {
+            billingCycle.setIsFinish(true);
+        }
         model.setBillingCycle(billingCycle);
         return billingRecordsRepository.save(model);
     }

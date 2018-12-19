@@ -3,6 +3,7 @@ package sdc.model.billing;
 import com.leadingsoft.bizfuse.common.jpa.model.AbstractAuditModel;
 import lombok.Getter;
 import lombok.Setter;
+import sdc.enums.RecordType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -33,5 +34,8 @@ public class BillingRecords extends AbstractAuditModel {
      * 描述
      */
     private String description;
-
+    /**
+     * 类型
+     */
+    private RecordType recordType;
 }

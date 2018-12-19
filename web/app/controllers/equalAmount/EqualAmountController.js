@@ -78,9 +78,149 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
             };
         }
     ]
+).controller('EqualAmountEditController',
+    ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountPreviewService', 'EqualAmountListService','EqualAmountDetailService',
+        function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountPreviewService, EqualAmountListService,EqualAmountDetailService) {
+            $scope.$on('$viewContentLoaded', function () {
+                App.initAjax();
+                $rootScope.settings.layout.pageBodySolid = true;
+                $rootScope.settings.layout.pageSidebarClosed = false;
+            });
+
+            $scope.columns = EqualAmountDetailService.getSchema();
+            $scope.sort = EqualAmountDetailService.getSort();
+            $scope.order = EqualAmountDetailService.getOrder();
+            $scope.pageable = EqualAmountDetailService.getPageable();
+            $scope.selectable = true;
+            $scope.noheadpageable=true;
+            $scope.pageable.size=25;
+
+            $scope.equalAmountTypes = EnumService.get("equalAmountTypes");
+            $scope.equalAmountSources = EnumService.get("equalAmountSources");
+
+
+            $scope.list = function () {
+                EqualAmountDetailService.list({id:$location.search().id}).$promise.then(function (result) {
+                    if ("success" == result.status) {
+                        $scope.rows = result.data;
+                        $scope.pageable = result.pageable;
+
+                        for (var i = 0; i < $scope.rows.length; i++) {
+                            if ($scope.rows[i].payment) {
+                                $scope.rows[i].realPayment=true;
+                                $scope.rows[i].selected = true
+                            }
+                        }
+
+                        if (!$scope.$$phase) {
+                            $scope.$apply();
+                        }
+                    }
+                });
+            };
+
+            var gotoFirstPage = function () {
+                EqualAmountDetailService.setStoredPage(0);
+                $scope.list();
+            };
+
+            EqualAmountDetailService.clearSearchParams();
+            gotoFirstPage();
+
+            var statisticsInfo = function () {
+                EqualAmountListService.statisticsInfo($location.search().id).$promise.then(function (result) {
+                    if ("success" == result.status) {
+                        $scope.model=result.data;
+                        $scope.copy_model=angular.copy($scope.model);
+                        $scope.model.amountTotalMoney=$scope.model.amountTotalMoney/100;
+                    }
+                });
+            };
+
+            statisticsInfo();
+
+            $scope.checkedList = [];
+            $scope.submit = function (form, formCorporation) {
+                form.$submitted = true;
+                formCorporation.$submitted = true;
+                if (form.$valid && formCorporation.$valid) {
+                    let paymentDto={
+                        id:$location.search().id,
+                        statisticId: $location.search().id,
+                        equalAmountName:$scope.model.equalAmountName,
+                        resultDTOS:[]
+                    };
+                    $scope.rows.forEach(function (v,i) {
+                        if (v.realPayment == undefined) {
+                            paymentDto.resultDTOS.push({resultId:v.id,resultNo:v.no,realRepaymentDate:v.repaymentDate,realPayment:false});
+                        }else{
+                            paymentDto.resultDTOS.push({resultId:v.id,resultNo:v.no,realRepaymentDate:v.repaymentDate,realPayment:v.realPayment});
+                        }
+                    });
+
+                    EqualAmountDetailService.updateEqualAmount($location.search().id, paymentDto).$promise.then(function (result) {
+                        if ('success' == result.status) {
+                            toastr.success("更新成功", "系统消息");
+                            statisticsInfo();
+                            $scope.list();
+                        }else {
+                            toastr.error("", "保存异常！");
+                        }
+
+                    });
+                }
+            };
+
+
+            $scope.reset = function () {
+                $scope.model = angular.copy($scope.copy_model);
+            };
+
+            $scope.back = function () {
+                $location.path("/equalAmount/list.html").search({});
+            };
+
+            $scope.dateClick = function () {
+                $scope.row.chk=true;
+                $scope.row.realPayment=true;
+            };
+
+            $scope.onRowClicked = function (row, $event) {
+                if (!row.chk) {
+                    row.realPayment=false;
+                }else{
+                    row.realPayment=true;
+                }
+                $scope.row=row;
+            };
+
+            $scope.$watch('pageable.size', function (newVal, oldVal) {
+                if (newVal == oldVal) return;
+                EqualAmountDetailService.setSize(newVal);
+                gotoFirstPage();
+            });
+
+            $scope.$watch('pageable.number', function (newVal, oldVal) {
+                if (newVal == oldVal) return;
+                EqualAmountDetailService.setStoredPage(newVal);
+                $scope.list();
+            });
+
+            $scope.$watch('sort', function (newValue, oldValue) {
+                if (oldValue == newValue) return;
+                EqualAmountDetailService.setSort(newValue);
+                $scope.list();
+            });
+
+            $scope.$watch('order', function (newValue, oldValue) {
+                if (oldValue == newValue) return;
+                EqualAmountDetailService.setOrder(newValue);
+                $scope.list();
+            });
+        }
+    ]
 ).controller('EqualAmountListController', ['$rootScope', '$scope', '$location', '$uibModal', 'EnumService', "toastr", 'EqualAmountListService','EqualAmountDetailService',
         function ($rootScope, $scope, $location, $uibModal, EnumService, toastr, EqualAmountListService,EqualAmountDetailService) {
-            $scope.$on('$viewContentLoaded', function () {
                 $scope.$on('$viewContentLoaded', function () {
                     App.initAjax();
                     $rootScope.settings.layout.pageBodySolid = true;
@@ -97,9 +237,15 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 $scope.equalAmountTypes = EnumService.get("equalAmountTypes");
                 $scope.equalAmountSources = EnumService.get("equalAmountSources");
 
+                $scope.sumPayMoney = 0;
+
                 $scope.list = function () {
                     EqualAmountListService.list().$promise.then(function (result) {
                         $scope.rows = result.data;
+
+                        angular.forEach(result.data, function (k, v) {
+                            $scope.sumPayMoney += k.amountTotalMoney;
+                        })
 
                         EqualAmountListService.setStoredPage(result.pageable.number);
                         $scope.pageable = result.pageable;
@@ -166,11 +312,35 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                 };
 
                 $scope.edit = function (id) {
-                    $location.path("/student/edit.html").search({"id": id});
+                    $location.path("/equalAmount/edit.html").search({"id": id});
                 };
 
                 $scope.del = function (id) {
-                    //todo:实现删除
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'confirm.html',
+                        controller: ["$scope", "$uibModalInstance", function (scope, $uibModalInstance) {
+                            scope.confirmContent = "确认删除该贷款吗？";
+                            scope.btn_ok = function () {
+                                $uibModalInstance.close(id);
+                            };
+                            scope.btn_cancel = function () {
+                                $uibModalInstance.dismiss();
+                            };
+                        }]
+                    });
+
+                    modalInstance.result.then(function (id) {
+                        EqualAmountListService.delete(id).$promise.then(function (result) {
+                            if ("success" == result.status) {
+                                gotoFirstPage();
+                                toastr.success("", "删除成功。");
+                            } else {
+                                for (var index in result.errors) {
+                                    toastr.error(result.errors[index].errmsg, "删除失败");
+                                }
+                            }
+                        });
+                    });
                 };
 
                 $scope.toPreview = function () {
@@ -208,11 +378,10 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                         }
                     })
                 };
-            });
 
             $scope.onRowClicked = function (row) {
-                EqualAmountDetailService.setStoredPage(0);
-                $scope.listEmbed(row);
+                // EqualAmountDetailService.setStoredPage(0);
+                // $scope.listEmbed(row);
             };
 
 
@@ -240,7 +409,7 @@ angular.module("MetronicApp").controller('EqualAmountPreviewController',
                     if ('success' == result.status) {
                         $scope.listEmbed($location.detailid);
                     }else {
-                        toastr.error("", "查询异常！");
+                        toastr.error("", "保存异常！");
                     }
 
                 });
